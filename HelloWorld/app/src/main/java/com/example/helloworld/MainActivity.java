@@ -7,6 +7,7 @@ import androidx.core.content.ContextCompat;
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -27,7 +28,7 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
         if(ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE)
                 == PackageManager.PERMISSION_GRANTED)
         {
-            permissionView.setText(R.string.no_need_permission);
+            permissionView.setText(Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID));
         }
         else
         {
@@ -50,7 +51,7 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
     {
         if (requestCode == PERMISSION_REQUEST_CODE) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                permissionView.setText(R.string.no_need_permission);
+                permissionView.setText(Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID));
             }
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);

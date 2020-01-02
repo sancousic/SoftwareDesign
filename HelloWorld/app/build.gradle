@@ -1,28 +1,42 @@
 apply plugin: 'com.android.application'
-buildscript {
-    repositories {
-        jcenter()
-    }
-    dependencies {
-        classpath 'org.ajoberstar:grgit:1.5.0'
-    }
-}
-import org.ajoberstar.grgit.Grgit
 
-ext {
-    git = Grgit.open(currentDir: projectDir)
-    gitVersionName = git.describe()
-    gitVersionCode = git.tag.list().size()
+ext.versionMajor = 1
+ext.versionMinor = 0
+ext.versionPatch = 0
+ext.versionClassifier = null
+ext.minimumSdkVersion = 23
+
+def getVersionCode = { ->
+    def code = generateVersionCode();
+    return code.toString().split("\n").size()
 }
+
+
+def getVersionName = { ->
+    try {
+        def stdout = new ByteArrayOutputStream()
+        exec {
+            commandLine 'git', 'describe', '--tags'
+            standardOutput = stdout
+        }
+        def matcher = stdout.toString().trim() =~ /\d+/
+        def VersionNameStr = matcher[0] + '.' + matcher[1] + '.' + matcher[2]
+        return VersionNameStr
+    }
+    catch (ignored) {
+        return null
+    }
+}
+
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.1"
     defaultConfig {
         applicationId "com.example.helloworld"
-        minSdkVersion 23
+        minSdkVersion project.ext.minimumSdkVersion
         targetSdkVersion 29
-        versionCode = gitVersionCode
-        versionName = gitVersionName
+        versionCode = generateVersionCode()
+        versionName = getVersionName()
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -42,3 +56,6 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 }
 
+private Integer generateVersionCode() {
+    return  ext.versionMajor * 10000 + ext.versionMinor * 100 + ext.versionPatch*100+ 1
+}
