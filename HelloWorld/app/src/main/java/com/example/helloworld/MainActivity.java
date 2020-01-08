@@ -25,6 +25,11 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
         permissionView = findViewById(R.id.permissionTextView);
         permissionButton = findViewById(R.id.permissionButton);
         view.setText(BuildConfig.VERSION_NAME.toString());
+    }
+    @Override
+    protected void onStart()
+    {
+        super.onStart();
         if(ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE)
                 == PackageManager.PERMISSION_GRANTED)
         {

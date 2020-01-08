@@ -20,7 +20,12 @@ def getVersionName = { ->
             standardOutput = stdout
         }
         def matcher = stdout.toString().trim() =~ /\d+/
-        def VersionNameStr = matcher[0] + '.' + matcher[1] + '.' + matcher[2]
+        ext.versionMinor = new Integer(matcher[0])
+        ext.versionMajor = new Integer(matcher[1])
+        if(matcher.size() == 2)
+            ext.versionPatch = 0
+        else ext.versionPatch = Integer(matcher[2])
+        def VersionNameStr = ext.versionMinor + '.' + ext.versionMajor + '.' + ext.versionPatch
         return VersionNameStr
     }
     catch (ignored) {
@@ -35,8 +40,9 @@ android {
         applicationId "com.example.helloworld"
         minSdkVersion project.ext.minimumSdkVersion
         targetSdkVersion 29
-        versionCode = generateVersionCode()
+
         versionName = getVersionName()
+        versionCode = generateVersionCode()
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -57,5 +63,5 @@ dependencies {
 }
 
 private Integer generateVersionCode() {
-    return  ext.versionMajor * 10000 + ext.versionMinor * 100 + ext.versionPatch*100+ 1
+    return  ext.versionMajor * 10000 + ext.versionMinor * 100 + ext.versionPatch
 }
