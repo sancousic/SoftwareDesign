@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity"
+    android:columnCount="4"
+    android:rowCount="3">
+
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_rowWeight="0.5"
+        android:layout_columnSpan="4"
+        android:scrollbars="none">
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:overScrollMode="never"
+            android:gravity="end|bottom"
+            android:textAlignment="gravity"
+            android:textSize="30sp"/>
+    </ScrollView>
+
+    <EditText
+        android:id="@+id/edit_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_rowWeight="0.05"
+        android:textAlignment="textEnd"
+        android:textSize="35sp"
+        android:singleLine="true"
+        android:focusable="false"
+        android:inputType="none|textNoSuggestions"
+        android:importantForAutofill="no"
+        android:hint="@string/_0" />
+
+    <fragment
+        android:id="@+id/baseFragment"
+        android:layout_columnSpan="4"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_rowWeight="0.9"
+        android:name="com.example.calculator.BaseFragment"
+        tools:layout="@layout/fragment_base"/>
+
+
+</GridLayout>

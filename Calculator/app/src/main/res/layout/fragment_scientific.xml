@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:columnCount="3"
+    android:rowCount="4"
+    tools:context=".MainActivity">
+
+    <Button
+        style="@style/ButtonStyle"
+        android:onClick="onOpClick"
+        android:text="@string/sin"/>
+    <Button
+        style="@style/ButtonStyle"
+        android:onClick="onOpClick"
+        android:text="@string/cos"/>
+    <Button
+        style="@style/ButtonStyle"
+        android:onClick="onOpClick"
+        android:text="@string/tan"/>
+
+    <Button
+        style="@style/ButtonStyle"
+        android:onClick="onOpClick"
+        android:text="@string/ln"/>
+    <Button
+        style="@style/ButtonStyle"
+        android:onClick="onOpClick"
+        android:text="@string/lg"/>
+    <Button
+        style="@style/ButtonStyle"
+        android:onClick="onOpClick"
+        android:text="@string/fact"/>
+
+    <Button
+        style="@style/ButtonStyle"
+        android:onClick="onOpClick"
+        android:text="@string/pi"/>
+    <Button
+        style="@style/ButtonStyle"
+        android:onClick="onNumberClick"
+        android:text="@string/e"/>
+    <Button
+        style="@style/ButtonStyle"
+        android:onClick="onOpClick"
+        android:text="@string/pow"/>
+
+    <Button
+        style="@style/ButtonStyle"
+        android:onClick="onOpClick"
+        android:text="@string/left"/>
+    <Button
+        style="@style/ButtonStyle"
+        android:onClick="onOpClick"
+        android:text="@string/right"/>
+    <Button
+        style="@style/ButtonStyle"
+        android:onClick="onOpClick"
+        android:text="@string/sqrt"/>
+</GridLayout>
