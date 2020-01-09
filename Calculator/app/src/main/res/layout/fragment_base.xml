@@ -37,10 +37,12 @@
         style="@style/ButtonStyle"
         android:onClick="onNumberClick"
         android:text="@string/_6"/>
+
     <Button
         style="@style/ButtonStyle"
+        android:background="#fffae8"
         android:onClick="onOpClick"
-        android:text="@string/div"/>
+        android:text="@string/div" />
 
     <Button
         style="@style/ButtonStyle"
@@ -54,10 +56,12 @@
         style="@style/ButtonStyle"
         android:onClick="onNumberClick"
         android:text="@string/_3"/>
+
     <Button
         style="@style/ButtonStyle"
+        android:background="#fffae8"
         android:onClick="onOpClick"
-        android:text="@string/mul"/>
+        android:text="@string/mul" />
 
     <Button
         style="@style/ButtonStyle"
@@ -67,14 +71,18 @@
         style="@style/ButtonStyle"
         android:onClick="onNumberClick"
         android:text="@string/_0"/>
+
     <Button
         style="@style/ButtonStyle"
+        android:background="#fffae8"
         android:onClick="onOpClick"
-        android:text="@string/add"/>
+        android:text="@string/add" />
+
     <Button
         style="@style/ButtonStyle"
+        android:background="#fffae8"
         android:onClick="onOpClick"
-        android:text="@string/sub"/>
+        android:text="@string/sub" />
 
     <Button
         android:id="@+id/equals"
