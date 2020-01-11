@@ -23,7 +23,8 @@ public class MainActivity extends AppCompatActivity {
     SharedPreferences preferences;
     static final String APP_PREFERECNES = "settings";
     boolean isClear = true;
-    boolean isClearNum = true;
+    boolean isInvalid = false;
+    //boolean isClearNum = true;
     StringBuilder result;
 
     @Override
@@ -62,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
         textView.setText(preferences.getString("textView", ""));
         editText.setText(preferences.getString("editText", ""));
         isClear = preferences.getBoolean("isClear", true);
-        isClearNum = preferences.getBoolean("isClearNum", true);
+        //isClearNum = preferences.getBoolean("isClearNum", true);
     }
     @Override
     public void onPause(){
@@ -72,14 +73,21 @@ public class MainActivity extends AppCompatActivity {
         ed.putString("editText", editText.getText().toString());
         ed.putString("result", result.toString());
         ed.putBoolean("isClear", isClear);
-        ed.putBoolean("isClearNum", isClearNum);
+        //ed.putBoolean("isClearNum", isClearNum);
         ed.apply();
+    }
+
+    protected void clearEdit(){
+        isInvalid = false;
+        result.setLength(0);
+        editText.setText("");
     }
 
     public void onOpClick(View view)
     {
-        isClearNum = false;
-
+        //isClearNum = false;
+        if(isInvalid)
+            clearEdit();
         Button btn = (Button)view;
         String op = btn.getText().toString();
         switch (op)
@@ -96,29 +104,17 @@ public class MainActivity extends AppCompatActivity {
                     isClear = true;
                 return;
             case "=":
-                double res = Calculator.exec(result.toString());
-                if(Double.isNaN(res))
-                {
-                    editText.setText("");
-                    result.setLength(0);
-                    textView.append(getString(R.string.invalid));
+                String res = Calculator.exec(result.toString());
+                if (!Character.isDigit(res.charAt(0))
+                        && res.charAt(0) != '-') {
+                    isInvalid = true;
                 }
-                else
-                {
-                    if(res % 1 == 0)
-                    {
-                        result = new StringBuilder(Integer.toString((int)res));
-                    }
-                    else
-                    {
-                        result = new StringBuilder(Double.toString(res));
-                    }
-                    textView.append(editText.getText());
-                    StringBuilder res_text = new StringBuilder(result);
-                    editText.setText(res_text.insert(0, "= "));
-                }
+                textView.append(editText.getText());
+                StringBuilder res_text = new StringBuilder(res);
+                editText.setText(res_text);
+                result = new StringBuilder(res);
                 textView.append("\n");
-                isClearNum = true;
+                //isClearNum = true;
                 break;
             default:;
                 if(!isClear && result.length() > 0)
@@ -147,13 +143,15 @@ public class MainActivity extends AppCompatActivity {
         mainScrollView.fullScroll(ScrollView.FOCUS_DOWN);
     }
     public void onNumberClick(View view){
+        if (isInvalid)
+            clearEdit();
         Button button = (Button)view;
         String num = button.getText().toString();
-        if(isClear || isClearNum) {
+        if(isClear) {
             textView.append("\n");
             editText.setText(num);
             isClear = false;
-            isClearNum = false;
+            //isClearNum = false;
             result.setLength(0);
         }
         else {

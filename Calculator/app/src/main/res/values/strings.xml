@@ -18,13 +18,11 @@
     <string name="cos">cos</string>
     <string name="tan">tan</string>
     <string name="delete">del</string>
-    <string name="clear">C</string>
     <string name="e">e</string>
     <string name="ln">ln</string>
     <string name="lg">lg</string>
     <string name="pow">^</string>
     <string name="sqrt">sqrt</string>
-    <string name="mod">%</string>
     <string name="fact">!</string>
     <string name="pi">pi</string>
     <string name="div">/</string>
@@ -34,7 +32,4 @@
     <string name="dot">.</string>
     <string name="eq">=</string>
     <string name="sci">SCI</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

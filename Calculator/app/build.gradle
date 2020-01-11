@@ -38,6 +38,10 @@ android {
             java.srcDirs = ['src/full/java/']
         }
     }
+    compileOptions {
+        sourceCompatibility = 1.8
+        targetCompatibility = 1.8
+    }
 }
 
 dependencies {

@@ -26,11 +26,12 @@ public class MainActivity extends AppCompatActivity {
     EditText editText;
     Button deleteButton;
 
-    SharedPreferences preferences;
-    static final String APP_PREFERECNES = "settings";
+    /*SharedPreferences preferences;
+    static final String APP_PREFERECNES = "settings";*/
     boolean isClear = true;
-    boolean isClearNum = true;
-    StringBuilder result;
+    boolean isInvalid = false;
+    //boolean isClearNum = true;
+    StringBuilder result = new StringBuilder("");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
             {
                 editText.setText("");
                 result.setLength(0);
+                textView.setText("");
                 isClear = true;
                 return true;
             }
@@ -57,12 +59,20 @@ public class MainActivity extends AppCompatActivity {
                 mainScrollView.fullScroll(ScrollView.FOCUS_DOWN);
             }
         });
-        preferences = getSharedPreferences(APP_PREFERECNES, Context.MODE_PRIVATE);
+        /*preferences = getSharedPreferences(APP_PREFERECNES, Context.MODE_PRIVATE);
         result = new StringBuilder(preferences.getString("result", "0"));
         textView.setText(preferences.getString("textView", ""));
         editText.setText(preferences.getString("editText", ""));
         isClear = preferences.getBoolean("isClear", true);
-        isClearNum = preferences.getBoolean("isClearNum", true);
+        isClearNum = preferences.getBoolean("isClearNum", true);*/
+        if(savedInstanceState != null) {
+            result = new StringBuilder(savedInstanceState.getString("result", ""));
+            textView.setText(savedInstanceState.getString("textView", ""));
+            editText.setText(savedInstanceState.getString("editText", ""));
+            isClear = savedInstanceState.getBoolean("isClear", true);
+            isInvalid = savedInstanceState.getBoolean(("isInvalid"), false);
+            //isClearNum = savedInstanceState.getBoolean("isClearNum", true);
+        }
     }
     protected void remove()
     {
@@ -78,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
             eqB.setLayoutParams(params);
         }
     }
-    @Override
+    /*@Override
     public void onPause(){
         super.onPause();
         SharedPreferences.Editor ed = preferences.edit();
@@ -88,6 +98,17 @@ public class MainActivity extends AppCompatActivity {
         ed.putBoolean("isClear", isClear);
         ed.putBoolean("isClearNum", isClearNum);
         ed.apply();
+    }*/
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState)
+    {
+        super.onSaveInstanceState(savedInstanceState);
+        savedInstanceState.putString("textView", textView.getText().toString());
+        savedInstanceState.putString("editText", editText.getText().toString());
+        savedInstanceState.putString("result", result.toString());
+        savedInstanceState.putBoolean("isClear", isClear);
+        savedInstanceState.putBoolean("isInvalid", isInvalid);
+        //savedInstanceState.putBoolean("isClearNum", isClearNum);
     }
     boolean isPorE(StringBuilder str){
         return (str.length() > 0 && str.charAt(str.length() - 1) == 'e')
@@ -99,10 +120,15 @@ public class MainActivity extends AppCompatActivity {
                 || (str.length() > 1 && str.charAt(str.length() - 2) == 'p'
                 && str.charAt(str.length() - 1) == 'i'));
     }
+    protected void clearEdit(){
+        isInvalid = false;
+        result.setLength(0);
+        editText.setText("");
+    }
     public void onOpClick(View view)
     {
-        isClearNum = false;
-
+        //isClearNum = false;
+        if(isInvalid) clearEdit();
         Button btn = (Button)view;
         String op = btn.getText().toString();
         switch (op)
@@ -115,12 +141,17 @@ public class MainActivity extends AppCompatActivity {
                     }
                     while (txt.length() > 0 && Character.isLetter(txt.charAt(txt.length() - 1))
                             && !isPorE(txt));
-                    return;
                 }
                 else {
                     isClear = true;
                 }
                 if(result.length() > 0) {
+                    if(result.length() >= 6
+                            && result.substring(result.length() - 6, result.length()).equals("log10("))
+                    {
+                        result.setLength(result.length() - 6);
+                        return;
+                    };
                     do {
                         result.setLength(result.length() - 1);
                     }
@@ -129,66 +160,40 @@ public class MainActivity extends AppCompatActivity {
                 else isClear = true;
                 return;
             case "=":
-                if(result.indexOf("(") != -1 && result.indexOf(")") == -1)
+                /*if(result.indexOf("(") != -1 && result.indexOf(")") == -1)
                 {
+
                     result.append(")");
-                }
-                double res = Calculator.exec(result.toString());
-                if(Double.isNaN(res)){
-                    editText.setText("");
-                    result.setLength(0);
-                    textView.append(getString(R.string.invalid));
-                }
-                else {
-                    if (res % 1 == 0)
-                        result = new StringBuilder(Integer.toString((int)res));
-                    else
-                        result = new StringBuilder(Double.toString(res));
-
+                }*/
+                if(result.length() > 0) {
+                    long count = result.chars().filter(ch -> ch == '(').count();
+                    for (long i = 0; i < count; i++) {
+                        result.append(')');
+                    }
+                    String res = Calculator.exec(result.toString());
+                    if (!Character.isDigit(res.charAt(0))
+                            && res.charAt(0) != '-') {
+                        isInvalid = true;
+                    }
+                    result = new StringBuilder(res);
                     textView.append(editText.getText());
-                    StringBuilder res_txt = new StringBuilder(result);
-                    editText.setText(res_txt.insert(0, "="));
+                    editText.setText(result);
+                    textView.append("\n");
+                    break;
                 }
-                textView.append("\n");
-                isClearNum = true;
-                break;
-            default:;
+            default:
                 String op_eval;
-                switch (op) {
-                    case "%":
-                        op_eval = "#";
-                        break;
-                    case "sin":
-                        op_eval = op = "sin(";
-                        break;
-                    case "cos":
-                        op_eval = op = "cos(";
-                        break;
-                    case "tan":
-                        op_eval = op = "tan(";
-                        break;
-                    case "ln":
-                        op_eval = op = "ln(";
-                        break;
-                    case "lg":
-                        op_eval = "log10(";
-                        op = "lg(";
-                        break;
-                    case "sqrt":
-                        op_eval = op = "sqrt(";
-                        break;
-                    case "pi":
-                        op_eval = op = "pi";
-                        break;
-                    default:
-                        op_eval = op;
-                        break;
-
+                if(op.equals("lg")) {
+                    op_eval = "log10(";
+                    op = "lg(";
                 }
-
+                else if(op.length() > 1) op_eval = op = op + "(";
+                else op_eval = op;
+                // if result not empty and prev is't (
                 if(!isClear && result.length() > 0 && op_eval.length() < 2 && !op.equals("(")
                     && result.charAt(result.length() - 1) != '(')
                 {
+                    // if prev is num or ) or ! add op in end
                     if(Character.isDigit(result.charAt(result.length() -1))
                         || result.charAt(result.length()-1) == ')'
                         || isPorE(result)
@@ -196,6 +201,7 @@ public class MainActivity extends AppCompatActivity {
                         editText.append(op);
                         result.append(op_eval);
                     }
+                    // else replace operator to newer
                     else {
                         if (result.length() > 1) {
                             Editable txt_sign = editText.getText();
@@ -204,11 +210,14 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }
                 }
+                // if operator == ( or -
                 else if(op_eval.length() > 1 || op.equals("(") || op_eval.equals("-")) {
-                    isClear = false;;
+                    isClear = false;
+                    // and if prev is digit or ) or Pi or e append * and op
                     if (result.length() > 0
                             && (Character.isDigit(result.charAt(result.length() - 1))
                             || result.charAt(result.length() - 1) == ')'
+                            || result.charAt(result.length() -1) == '!'
                             || isPorE(result)))
                     {
                         result.append("*");
@@ -224,16 +233,18 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void onNumberClick(View view){
+        if(isInvalid) clearEdit();
         Button button = (Button)view;
         String num = button.getText().toString();
-        if (isClear || isClearNum){
+        if (isClear){
             textView.append("\n");
             editText.setText(num);
             isClear = false;
-            isClearNum = false;
+            //isClearNum = false;
             result.setLength(0);
         }
         else if(result.length() > 0 && (isPorE(result) || result.charAt(result.length() - 1) == ')'
+                || result.charAt(result.length() - 1) == '!'
                 || (num.equals("e") && Character.isDigit(result.charAt(result.length() - 1)))))
         {
             result.append("*");

@@ -45,7 +45,7 @@
     <Button
         style="@style/ButtonStyle"
         android:background="#fffae8"
-        android:onClick="onOpClick"
+        android:onClick="onNumberClick"
         android:text="@string/pi" />
 
     <Button
