@@ -1,0 +1,105 @@
+package com.example.rssparser.views.adapters;
+
+import android.content.Context;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.rssparser.R;
+import com.example.rssparser.models.entities.Feed;
+import com.example.rssparser.viewModels.WebViewViewModel;
+import com.example.rssparser.views.activities.MainActivity;
+import com.example.rssparser.views.fragments.WebViewFragment;
+import com.squareup.picasso.Picasso;
+
+import java.util.List;
+
+public class RssListViewAdapter extends RecyclerView.Adapter<RssListViewAdapter.RssViewHolder> {
+    class RssViewHolder extends RecyclerView.ViewHolder {
+        private final TextView feedTitleTextView;
+        private final TextView feedPubDateTextView;
+        private final TextView feedDescriptionTextView;
+        private final CardView cardView;
+        private final ImageView imageView;
+
+        private RssViewHolder(View itemView) {
+            super(itemView);
+            feedTitleTextView = itemView.findViewById(R.id.feedTitle);
+            feedPubDateTextView = itemView.findViewById(R.id.feedPubDate);
+            feedDescriptionTextView = itemView.findViewById(R.id.feedDescription);
+            cardView = itemView.findViewById(R.id.card_view);
+            imageView = itemView.findViewById(R.id.image);
+        }
+    }
+
+    private final LayoutInflater inflater;
+    private List<Feed> feedList;
+    private Context context;
+
+    public RssListViewAdapter(Context context) {
+        inflater = LayoutInflater.from(context);
+        this.context = context;
+    }
+
+    @Override
+    public @NonNull RssViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View itemView = inflater.inflate(R.layout.recycle_feed_item, parent, false);
+        return new RssViewHolder(itemView);
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull RssViewHolder holder, int pos) {
+        if(feedList != null) {
+            Feed current = feedList.get(pos);
+            holder.feedTitleTextView.setText(current.title);
+            holder.feedPubDateTextView.setText(current.pubDate.toString());
+            holder.feedDescriptionTextView.setText(current.description);
+            holder.cardView.setOnClickListener((View view) -> {
+                WebViewViewModel feedViewModel = new ViewModelProvider((MainActivity) context)
+                        .get(WebViewViewModel.class);
+                feedViewModel.setLink(current.link);
+
+                FragmentManager fragmentManager = ((MainActivity) context)
+                        .getSupportFragmentManager();
+                if(fragmentManager.findFragmentByTag("WebViewFragment") == null) {
+                    FragmentTransaction transaction = fragmentManager.beginTransaction();
+                    transaction.addToBackStack(null);
+
+                    WebViewFragment fragment = new WebViewFragment();
+                    transaction.replace(R.id.frameLayout, fragment, "WebViewFragment");
+                }
+            });
+            if (current.mediaUrl == null) {
+                holder.imageView.setVisibility(View.GONE);
+            }
+            else {
+                Picasso.get()
+                        .load(current.mediaUrl)
+                        .resize(750, 750)
+                        .centerCrop()
+                        .into(holder.imageView);
+            }
+        }
+    }
+
+    public void setFeedList(List<Feed> feed){
+        feedList = feed;
+        notifyDataSetChanged();
+    }
+
+    @Override
+    public int getItemCount() {
+        if(feedList != null)
+            return feedList.size();
+        else return 0;
+    }
+}
