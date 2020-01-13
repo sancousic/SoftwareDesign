@@ -102,23 +102,13 @@
     <Button
         android:id="@+id/equals"
         style="@style/ButtonStyle"
-        android:layout_column="3"
+        android:layout_column="0"
+        android:layout_columnSpan="4"
         android:background="#8BC34A"
         android:onClick="onOpClick"
         android:text="@string/eq" />
 
-    <Button
-        android:id="@+id/scl"
-        style="@style/ButtonStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="1dp"
-        android:layout_column="0"
-        android:layout_columnSpan="3"
-        android:layout_gravity="fill"
-        android:background="#FFC107"
-        android:onClick="onSciClick"
-        android:text="@string/sci"
-        android:textColor="@color/colorPrimaryDark" />
+
 
 
 
