@@ -21,8 +21,6 @@
             android:layout_weight="9"
             android:orientation="vertical">
 
-
-
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/titleEdit"
                 android:layout_width="match_parent"
