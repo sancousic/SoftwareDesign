@@ -20,6 +20,9 @@ public class Feed {
     public String link;
 
     @ColumnInfo(name = "description")
+    public String description;
+
+    @ColumnInfo(name = "media_url")
     public  String mediaUrl;
 
     @ColumnInfo(name = "pub_name")
