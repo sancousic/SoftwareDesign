@@ -6,16 +6,17 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class DBHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "notes.db";
+    private static final int DB_VERSION = 2;
     public static final String TABLE = "notes";
     public static final String COLUMN_ID = "_id";
     public static final String COLUMN_TITLE = "title";
     public static final String COLUMN_BODY = "body";
     public static final String COLUMN_TAGS = "tags";
     public static final String COLUMN_DATE = "date";
-    private static final int SCHEMA = 2;
+
 
     public DBHelper(Context context) {
-        super(context, DATABASE_NAME, null, SCHEMA);
+        super(context, DATABASE_NAME, null, DB_VERSION);
     }
 
     @Override

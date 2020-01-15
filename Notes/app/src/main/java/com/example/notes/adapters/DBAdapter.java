@@ -30,7 +30,7 @@ public class DBAdapter {
         dbHelper.close();
     }
 
-    private Cursor getAllEnries() {
+    private Cursor getAllEntries() {
         String[] columns = new String[] {
                 DBHelper.COLUMN_ID,
                 DBHelper.COLUMN_TITLE,
@@ -44,7 +44,7 @@ public class DBAdapter {
 
     public List<Note> getNotes() {
         ArrayList<Note> notes = new ArrayList<>();
-        Cursor cursor = getAllEnries();
+        Cursor cursor = getAllEntries();
         if(cursor.moveToFirst()) {
             do {
                 int id = cursor.getInt(cursor.getColumnIndex(DBHelper.COLUMN_ID));

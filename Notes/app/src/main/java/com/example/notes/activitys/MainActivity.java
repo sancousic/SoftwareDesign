@@ -14,12 +14,18 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import com.example.notes.R;
-import com.example.notes.interfaces.OnActivityFindListener;
-import com.example.notes.interfaces.OnActivitySortListener;
 import com.example.notes.models.Note;
 import com.example.notes.models.SortEnum;
 
 public class MainActivity extends AppCompatActivity {
+    public interface OnActivitySortListener {
+        void onActivitySortListener(SortEnum sortType);
+    }
+
+    public interface OnActivityFindListener {
+        void onActivityFindListener(String tag);
+    }
+
     private OnActivitySortListener sortListener;
     private OnActivityFindListener findListener;
     private EditText findEdit;
@@ -52,15 +58,9 @@ public class MainActivity extends AppCompatActivity {
         findEdit = findViewById(R.id.tagFindEdit);
         findEdit.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
             @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
             @Override
             public void afterTextChanged(Editable editable) {
                 findListener.onActivityFindListener(editable.toString());

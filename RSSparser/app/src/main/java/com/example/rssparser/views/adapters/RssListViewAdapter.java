@@ -76,6 +76,7 @@ public class RssListViewAdapter extends RecyclerView.Adapter<RssListViewAdapter.
 
                     WebViewFragment fragment = new WebViewFragment();
                     transaction.replace(R.id.frameLayout, fragment, "WebViewFragment");
+                    transaction.commit();
                 }
             });
             if (current.mediaUrl == null) {

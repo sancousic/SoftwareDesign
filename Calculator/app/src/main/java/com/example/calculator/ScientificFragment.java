@@ -21,7 +21,7 @@ public class ScientificFragment extends BaseFragment {
         ((Button)view.findViewById(R.id.ln)).setOnClickListener(this::onOpClick);
         ((Button)view.findViewById(R.id.lg)).setOnClickListener(this::onOpClick);
         ((Button)view.findViewById(R.id.fact)).setOnClickListener(this::onOpClick);
-        ((Button)view.findViewById(R.id.pi)).setOnClickListener(this::onNumClick);
+        ((Button)view.findViewById(R.id.pi)).setOnClickListener(this::onOpClick);
         ((Button)view.findViewById(R.id.e)).setOnClickListener(this::onNumClick);
         ((Button)view.findViewById(R.id.pow)).setOnClickListener(this::onOpClick);
         ((Button)view.findViewById(R.id.left)).setOnClickListener(this::onOpClick);

@@ -36,12 +36,15 @@ public class NetworkIntentService extends IntentService {
                 data.putBoolean("isConnected", isConnected);
                 msg.setData(data);
                 messenger.send(msg);
-                Thread.sleep(3000);
+                Thread.sleep(400);
             }
             catch (InterruptedException e) {
                 System.out.println(e);
             }
             catch (RemoteException e) {
+                System.out.println(e);
+            }
+            catch (NullPointerException e) {
                 System.out.println(e);
             }
         }

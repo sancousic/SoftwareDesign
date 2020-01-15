@@ -22,10 +22,10 @@ public class MainActivity extends AppCompatActivity {
 
     SharedPreferences preferences;
     static final String APP_PREFERECNES = "settings";
-    boolean isClear = true;
-    boolean isInvalid = false;
+    public static boolean isClear = true;
+    public static boolean isInvalid = false;
     //boolean isClearNum = true;
-    StringBuilder result;
+    public static StringBuilder result;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

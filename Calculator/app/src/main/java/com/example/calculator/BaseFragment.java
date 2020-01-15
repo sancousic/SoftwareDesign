@@ -47,6 +47,7 @@ public class BaseFragment extends Fragment {
         ((Button)view.findViewById(R.id.div)).setOnClickListener(this::onOpClick);
         ((Button)view.findViewById(R.id.add)).setOnClickListener(this::onOpClick);
         ((Button)view.findViewById(R.id.sub)).setOnClickListener(this::onOpClick);
+        ((Button)view.findViewById(R.id.dot)).setOnClickListener(this::onOpClick);
         ((Button)view.findViewById(R.id.equals)).setOnClickListener(this::onOpClick);
         Button sciB = (Button)view.findViewById(R.id.scl);
         if(sciB != null) sciB.setOnClickListener(this::onSciClick);
@@ -83,8 +84,9 @@ public class BaseFragment extends Fragment {
                 || (str.length() > 1 && str.charAt(str.length() - 2) == 'p'
                 && str.charAt(str.length() - 1) == 'i'));
     }
-    boolean isP(StringBuilder str){
-        return ((str.length() > 1 && str.charAt(str.length() - 2) == 'p'
+    boolean isPorE(String str){
+        return (str.length() > 0 && (str.charAt(str.length() - 1) == 'e')
+                || (str.length() > 1 && str.charAt(str.length() - 2) == 'p'
                 && str.charAt(str.length() - 1) == 'i'));
     }
     protected void clearEdit(){
@@ -128,6 +130,10 @@ public class BaseFragment extends Fragment {
                 return;
             case "=":
                 if(MainActivity.result.length() > 0) {
+                    if("/*-+.".indexOf(MainActivity.result.charAt(MainActivity.result.length() - 1)) >= 0)
+                    {
+                        MainActivity.result.setLength(MainActivity.result.length() -1);
+                    }
                     long count = MainActivity.result.chars().filter(ch -> ch == '(').count();
                     for (long i = 0; i < count; i++) {
                         MainActivity.result.append(')');
@@ -150,8 +156,10 @@ public class BaseFragment extends Fragment {
                     op_eval = "log10(";
                     op = "lg(";
                 }
-                else if(op.length() > 1) op_eval = op = op + "(";
-                else op_eval = op;
+                else if(op.length() > 1 && !op.equalsIgnoreCase("pi"))
+                    op_eval = op = op + "(";
+                else
+                    op_eval = op;
                 // if result not empty and prev is't (
                 if(!MainActivity.isClear && MainActivity.result.length() > 0 && op_eval.length() < 2 && !op.equals("(")
                         && MainActivity.result.charAt(MainActivity.result.length() - 1) != '(')
@@ -204,10 +212,12 @@ public class BaseFragment extends Fragment {
             MainActivity.result.setLength(0);
         }
         //TODO rewrite this shit
-        else if(MainActivity.result.length() > 0 && (isPorE(MainActivity.result)) || MainActivity.result.charAt(MainActivity.result.length() - 1) == ')'
-                || (MainActivity.result.charAt(MainActivity.result.length() - 1) == '!')
-                || (num.equals("e") && Character.isDigit(MainActivity.result.charAt(MainActivity.result.length() - 1)))
-                || (num.equals("pi") && Character.isDigit(MainActivity.result.charAt(MainActivity.result.length() - 2))))
+        else if(MainActivity.result.length() > 0
+                && (!isPorE(num) && (isPorE(MainActivity.result)
+                || MainActivity.result.charAt(MainActivity.result.length() - 1) == '!')
+                || (isPorE(num)
+                && (Character.isDigit(MainActivity.result.charAt(MainActivity.result.length() -1))
+                || isPorE(MainActivity.result)))))
         {
             MainActivity.result.append("*");
             handler.getEditText().append("*");

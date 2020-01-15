@@ -45,6 +45,8 @@ public class Note implements Serializable {
         return id;
     }
     public String getTitle() {
+        if(title.equals(""))
+            return getStringDate();
         return title;
     }
     public String getBody() {

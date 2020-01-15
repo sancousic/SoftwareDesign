@@ -10,83 +10,71 @@
         style="@style/ButtonStyle"
         android:id="@+id/sin"
         android:background="#fffae8"
-        android:onClick="onOpClick"
         android:text="@string/sin" />
 
     <Button
         style="@style/ButtonStyle"
         android:id="@+id/cos"
         android:background="#fffae8"
-        android:onClick="onOpClick"
         android:text="@string/cos" />
 
     <Button
         style="@style/ButtonStyle"
         android:id="@+id/tan"
         android:background="#fffae8"
-        android:onClick="onOpClick"
         android:text="@string/tan" />
 
     <Button
         style="@style/ButtonStyle"
         android:id="@+id/ln"
         android:background="#fffae8"
-        android:onClick="onOpClick"
         android:text="@string/ln" />
 
     <Button
         style="@style/ButtonStyle"
         android:id="@+id/lg"
         android:background="#fffae8"
-        android:onClick="onOpClick"
         android:text="@string/lg" />
 
     <Button
         style="@style/ButtonStyle"
         android:id="@+id/fact"
         android:background="#fffae8"
-        android:onClick="onOpClick"
         android:text="@string/fact" />
 
     <Button
         style="@style/ButtonStyle"
         android:id="@+id/pi"
         android:background="#fffae8"
-        android:onClick="onNumberClick"
         android:text="@string/pi" />
 
     <Button
         style="@style/ButtonStyle"
         android:id="@+id/e"
         android:background="#fffae8"
-        android:onClick="onNumberClick"
         android:text="@string/e" />
 
     <Button
         style="@style/ButtonStyle"
         android:id="@+id/pow"
         android:background="#fffae8"
-        android:onClick="onOpClick"
         android:text="@string/pow" />
 
     <Button
         style="@style/ButtonStyle"
         android:id="@+id/left"
         android:background="#fffae8"
-        android:onClick="onOpClick"
         android:text="@string/left" />
 
     <Button
         style="@style/ButtonStyle"
         android:id="@+id/right"
         android:background="#fffae8"
-        android:onClick="onOpClick"
         android:text="@string/right" />
 
     <Button
         style="@style/ButtonStyle"
         android:id="@+id/sqrt"
         android:background="#fffae8"
-        android:onClick="onOpClick"
         android:text="@string/sqrt" />
 </GridLayout>

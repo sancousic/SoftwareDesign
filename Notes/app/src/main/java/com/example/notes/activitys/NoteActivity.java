@@ -37,6 +37,8 @@ public class NoteActivity extends AppCompatActivity {
 
         note = (Note)arguments.getSerializable("note");
 
+
+
         if(note.hasTitle())
             titleEdit.setText(note.getTitle());
         tagsEdit.setText(note.getSringTags());

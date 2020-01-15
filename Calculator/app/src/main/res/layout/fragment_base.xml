@@ -77,7 +77,6 @@
     <Button
         style="@style/ButtonStyle"
         android:id="@+id/dot"
-        android:onClick="onOpClick"
         android:text="@string/dot"/>
     <Button
         style="@style/ButtonStyle"
