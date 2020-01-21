@@ -7,8 +7,10 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Switch;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -21,14 +23,18 @@ public class MainActivity extends AppCompatActivity {
     public interface OnActivitySortListener {
         void onActivitySortListener(SortEnum sortType);
     }
-
+    public interface OnActivityChangeAscending {
+        void onActivityChangeAscending(boolean direction);
+    }
     public interface OnActivityFindListener {
         void onActivityFindListener(String tag);
     }
 
     private OnActivitySortListener sortListener;
     private OnActivityFindListener findListener;
+    private OnActivityChangeAscending changeAscending;
     private EditText findEdit;
+    private Switch sortSwitch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,15 +42,16 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.notesListFragment);
+
         sortListener = (OnActivitySortListener) fragment;
         findListener = (OnActivityFindListener) fragment;
+        changeAscending = (OnActivityChangeAscending) fragment;
 
         Spinner spinner = findViewById(R.id.sortSpinner);
         ArrayAdapter<SortEnum> adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_item, SortEnum.values());
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
-
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -67,8 +74,15 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         findEdit.clearFocus();
-    }
 
+        sortSwitch = findViewById(R.id.switchSearch);
+        sortSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                changeAscending.onActivityChangeAscending(isChecked);
+            }
+        });
+    }
     @Override
     public void onResume() {
         super.onResume();

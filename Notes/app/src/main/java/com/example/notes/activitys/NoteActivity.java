@@ -12,6 +12,8 @@ import com.example.notes.R;
 import com.example.notes.adapters.DBAdapter;
 import com.example.notes.models.Note;
 
+import java.util.Date;
+
 public class NoteActivity extends AppCompatActivity {
     private EditText titleEdit;
     private EditText tagsEdit;
@@ -37,8 +39,6 @@ public class NoteActivity extends AppCompatActivity {
 
         note = (Note)arguments.getSerializable("note");
 
-
-
         if(note.hasTitle())
             titleEdit.setText(note.getTitle());
         tagsEdit.setText(note.getSringTags());
@@ -49,13 +49,13 @@ public class NoteActivity extends AppCompatActivity {
         String title = titleEdit.getText().toString();
         String tags = tagsEdit.getText().toString();
         String body = bodyEdit.getText().toString();
-
+        String date = note.getStringDate();
         if(body.equals("")) {
             showError();
             return;
         }
 
-        Note newNote = new Note(note.getId(), title, body, tags);
+        Note newNote = new Note(note.getId(), title, body, tags, date);
         dbAdapter.open();
         if(note.getId() != 0)
             dbAdapter.update(newNote);

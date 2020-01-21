@@ -33,6 +33,10 @@
                         android:layout_height="match_parent"
                         android:text="@string/sort"
                         android:padding="10dp"/>
+                    <Switch
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:id="@+id/switchSearch"/>
                     <Spinner
                         android:id="@+id/sortSpinner"
                         android:layout_width="0dp"
@@ -50,6 +54,7 @@
                         android:layout_height="match_parent"
                         android:text="@string/find"
                         android:padding="10dp"/>
+
                     <EditText
                         android:id="@+id/tagFindEdit"
                         android:layout_width="0dp"

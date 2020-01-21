@@ -65,7 +65,7 @@ public class DBAdapter {
         contentValues.put(DBHelper.COLUMN_TITLE, note.hasTitle() ? note.getTitle() : "");
         contentValues.put(DBHelper.COLUMN_BODY, note.getBody());
         contentValues.put(DBHelper.COLUMN_DATE,
-                new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(new Date()));
+                new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(note.getCreatingDate()));
         contentValues.put(DBHelper.COLUMN_TAGS, note.getSringTags());
         return contentValues;
     }

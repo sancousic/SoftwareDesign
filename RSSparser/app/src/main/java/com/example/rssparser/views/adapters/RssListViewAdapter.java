@@ -1,4 +1,4 @@
-package com.example.rssparser.views.adapters;
+package com.example.rssparser.views.adapters;;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -23,7 +23,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-public class RssListViewAdapter extends RecyclerView.Adapter<RssListViewAdapter.RssViewHolder> {
+public class RssListViewAdapter extends RecyclerView.Adapter<RssListViewAdapter.RssViewHolder>{
     class RssViewHolder extends RecyclerView.ViewHolder {
         private final TextView feedTitleTextView;
         private final TextView feedPubDateTextView;
@@ -42,8 +42,9 @@ public class RssListViewAdapter extends RecyclerView.Adapter<RssListViewAdapter.
     }
 
     private final LayoutInflater inflater;
-    private List<Feed> feedList;
+    private List<Feed> feed;
     private Context context;
+
 
     public RssListViewAdapter(Context context) {
         inflater = LayoutInflater.from(context);
@@ -57,23 +58,21 @@ public class RssListViewAdapter extends RecyclerView.Adapter<RssListViewAdapter.
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RssViewHolder holder, int pos) {
-        if(feedList != null) {
-            Feed current = feedList.get(pos);
+    public void onBindViewHolder(@NonNull RssViewHolder holder, int position) {
+        if(feed != null) {
+            Feed current = feed.get(position);
             holder.feedTitleTextView.setText(current.title);
             holder.feedPubDateTextView.setText(current.pubDate.toString());
             holder.feedDescriptionTextView.setText(current.description);
             holder.cardView.setOnClickListener((View view) -> {
-                WebViewViewModel feedViewModel = new ViewModelProvider((MainActivity) context)
-                        .get(WebViewViewModel.class);
+                WebViewViewModel feedViewModel = new ViewModelProvider((MainActivity) context).get(WebViewViewModel.class);
                 feedViewModel.setLink(current.link);
 
-                FragmentManager fragmentManager = ((MainActivity) context)
-                        .getSupportFragmentManager();
+                FragmentManager fragmentManager = ((MainActivity) context).getSupportFragmentManager();
                 if(fragmentManager.findFragmentByTag("WebViewFragment") == null) {
                     FragmentTransaction transaction = fragmentManager.beginTransaction();
-                    transaction.addToBackStack(null);
 
+                    transaction.addToBackStack(null);
                     WebViewFragment fragment = new WebViewFragment();
                     transaction.replace(R.id.frameLayout, fragment, "WebViewFragment");
                     transaction.commit();
@@ -83,24 +82,27 @@ public class RssListViewAdapter extends RecyclerView.Adapter<RssListViewAdapter.
                 holder.imageView.setVisibility(View.GONE);
             }
             else {
+                //holder.imageView.setVisibility(View.GONE);
                 Picasso.get()
                         .load(current.mediaUrl)
                         .resize(750, 750)
                         .centerCrop()
                         .into(holder.imageView);
+                holder.imageView.setVisibility(View.VISIBLE);
             }
         }
     }
 
-    public void setFeedList(List<Feed> feed){
-        feedList = feed;
+
+    public void setFeed(List<Feed> feed){
+        this.feed = feed;
         notifyDataSetChanged();
     }
 
     @Override
     public int getItemCount() {
-        if(feedList != null)
-            return feedList.size();
+        if (feed != null)
+            return feed.size();
         else return 0;
     }
 }

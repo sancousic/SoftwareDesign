@@ -8,8 +8,10 @@ public class Calculator {
         expression.checkLexSyntax();
         String err = expression.getErrorMessage();
         double res =  expression.calculate();
-        if(err != "Syntax status unknown.") return "Invalid syntax";
-        if(Double.isNaN(res)) return "Invalid expression";;
+        if(!err.equals("Syntax status unknown."))
+            return "Invalid syntax";
+        if(Double.isNaN(res))
+            return "Invalid expression";;
         return Double.toString(res);
     }
 }

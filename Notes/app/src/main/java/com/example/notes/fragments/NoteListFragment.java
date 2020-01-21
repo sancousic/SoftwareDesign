@@ -25,18 +25,21 @@ import java.util.Comparator;
 import java.util.List;
 
 public class NoteListFragment extends Fragment
-        implements MainActivity.OnActivitySortListener, MainActivity.OnActivityFindListener {
+        implements MainActivity.OnActivitySortListener, MainActivity.OnActivityFindListener,
+        MainActivity.OnActivityChangeAscending{
 
     private List<Note> notes = new ArrayList<>();
     private AdapterView adapterView;
     private NoteAdapter noteAdapter;
     private SortEnum sortType = SortEnum.Date;
+    private boolean isAscending = false;
     private String tagsForSearch = "";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_note_list, container, false);
+
         adapterView = view.findViewById(R.id.notesList);
 
         adapterView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -49,7 +52,6 @@ public class NoteListFragment extends Fragment
         });
         return view;
     }
-
     @Override
     public void onResume() {
         super.onResume();
@@ -57,7 +59,6 @@ public class NoteListFragment extends Fragment
         dbAdapter.open();
 
         notes = dbAdapter.getNotes();
-        sortType = SortEnum.Date;
         sortNotes();
         if(!tagsForSearch.equals(""))
             filterNotesByTag();
@@ -72,12 +73,13 @@ public class NoteListFragment extends Fragment
     public void onActivitySortListener (SortEnum sortType) {
         this.sortType = sortType;
         sortNotes();
-        noteAdapter.notifyDataSetChanged();
+        if(noteAdapter != null)
+            noteAdapter.notifyDataSetChanged();
     }
 
     @Override
-    public void onActivityFindListener (String tag) {
-        tagsForSearch = tag;
+    public void onActivityFindListener (String tags) {
+        tagsForSearch = tags;
         DBAdapter dbAdapter = new DBAdapter(getContext());
         dbAdapter.open();
         notes.clear();
@@ -87,23 +89,52 @@ public class NoteListFragment extends Fragment
         if(noteAdapter != null)
             noteAdapter.notifyDataSetChanged();
     }
+    @Override
+    public void onActivityChangeAscending(boolean direction)
+    {
+        this.isAscending = direction;
+        sortNotes();
+        if(noteAdapter != null)
+            noteAdapter.notifyDataSetChanged();
+    }
 
     private void sortNotes() {
         if(sortType.toString().equals(SortEnum.Date.toString())) {
-            notes.sort(new Comparator<Note>() {
-                @Override
-                public int compare(Note note1, Note note2) {
-                    return note2.getCreatingDate().compareTo(note1.getCreatingDate()); }
-            });
+            if(isAscending)
+            {
+                notes.sort(new Comparator<Note>() {
+                    @Override
+                    public int compare(Note note1, Note note2) {
+                        return note1.getCreatingDate().compareTo(note2.getCreatingDate()); }
+                });
+            }
+            else {
+                notes.sort(new Comparator<Note>() {
+                    @Override
+                    public int compare(Note note1, Note note2) {
+                        return note2.getCreatingDate().compareTo(note1.getCreatingDate()); }
+                });
+            }
         }
         else {
-            notes.sort(new Comparator<Note>() {
-                @Override
-                public int compare(Note note1, Note note2) {
-                    return note1.getTitle().toLowerCase().
-                            compareTo(note2.getTitle().toLowerCase());
-                }
-            });
+            if(isAscending) {
+                notes.sort(new Comparator<Note>() {
+                    @Override
+                    public int compare(Note note1, Note note2) {
+                        return note1.getTitle().toLowerCase().
+                                compareTo(note2.getTitle().toLowerCase());
+                    }
+                });
+            }
+            else {
+                notes.sort(new Comparator<Note>() {
+                    @Override
+                    public int compare(Note note1, Note note2) {
+                        return note2.getTitle().toLowerCase().
+                                compareTo(note1.getTitle().toLowerCase());
+                    }
+                });
+            }
         }
     }
 
@@ -127,8 +158,8 @@ public class NoteListFragment extends Fragment
             if(flg)
                 filteredNotes.add(note);
         }
-        sortNotes();
         notes.clear();
         notes.addAll(filteredNotes);
+        sortNotes();
     }
 }

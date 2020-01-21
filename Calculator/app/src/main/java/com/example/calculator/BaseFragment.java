@@ -19,7 +19,10 @@ import androidx.fragment.app.FragmentTransaction;
 import java.util.Objects;
 
 public class BaseFragment extends Fragment {
-    private OnBaseFragmentButtonClickListener handler;
+    protected OnBaseFragmentButtonClickListener handler;
+    public static boolean isClear = true;
+    public static boolean isInvalid = false;
+    StringBuilder result = new StringBuilder("");
     public BaseFragment() {
         // Required empty public constructor
     }
@@ -135,7 +138,8 @@ public class BaseFragment extends Fragment {
                         MainActivity.result.setLength(MainActivity.result.length() -1);
                     }
                     long count = MainActivity.result.chars().filter(ch -> ch == '(').count();
-                    for (long i = 0; i < count; i++) {
+                    long count2 = MainActivity.result.chars().filter(ch -> ch == ')').count();
+                    for (long i = 0; i < count - count2; i++) {
                         MainActivity.result.append(')');
                     }
                     String res = Calculator.exec(MainActivity.result.toString());
@@ -143,7 +147,8 @@ public class BaseFragment extends Fragment {
                             || Character.isDigit(res.charAt(0)))) {
                         MainActivity.isInvalid = false;
                     }
-                    else MainActivity.isInvalid = true;
+                    else
+                        MainActivity.isInvalid = true;
                     MainActivity.result = new StringBuilder(res);
                     handler.getTextView().append(handler.getEditText().getText());
                     handler.getEditText().setText(MainActivity.result);
@@ -151,53 +156,29 @@ public class BaseFragment extends Fragment {
                     break;
                 }
             default:
-                String op_eval;
-                if(op.equals("lg")) {
-                    op_eval = "log10(";
-                    op = "lg(";
-                }
-                else if(op.length() > 1 && !op.equalsIgnoreCase("pi"))
-                    op_eval = op = op + "(";
-                else
-                    op_eval = op;
-                // if result not empty and prev is't (
-                if(!MainActivity.isClear && MainActivity.result.length() > 0 && op_eval.length() < 2 && !op.equals("(")
+                if(MainActivity.result.length() > 0
                         && MainActivity.result.charAt(MainActivity.result.length() - 1) != '(')
                 {
-                    // if prev is num or ) or ! add op in end
                     if(Character.isDigit(MainActivity.result.charAt(MainActivity.result.length() -1))
                             || MainActivity.result.charAt(MainActivity.result.length()-1) == ')'
                             || isPorE(MainActivity.result)
                             || MainActivity.result.charAt(MainActivity.result.length() - 1) == '!') {
                         handler.getEditText().append(op);
-                        MainActivity.result.append(op_eval);
+                        MainActivity.result.append(op);
                     }
-                    // else replace operator to newer
                     else {
                         if (MainActivity.result.length() > 1) {
                             Editable txt_sign = handler.getEditText().getText();
                             handler.getEditText().setText(txt_sign.replace(txt_sign.length()-1,txt_sign.length(), op));
-                            MainActivity.result.replace(MainActivity.result.length()-1,MainActivity.result.length(), op_eval);
+                            MainActivity.result.replace(MainActivity.result.length()-1,MainActivity.result.length(), op);
                         }
                     }
                 }
-                // if operator == ( or -
-                else if(op_eval.length() > 1 || op.equals("(") || op_eval.equals("-")) {
+                else if(op.equals("-")) {
                     MainActivity.isClear = false;
-                    // and if prev is digit or ) or Pi or e append * and op
-                    if (MainActivity.result.length() > 0
-                            && (Character.isDigit(MainActivity.result.charAt(MainActivity.result.length() - 1))
-                            || MainActivity.result.charAt(MainActivity.result.length() - 1) == ')'
-                            || MainActivity.result.charAt(MainActivity.result.length() -1) == '!'
-                            || isPorE(MainActivity.result)))
-                    {
-                        MainActivity.result.append("*");
-                        handler.getEditText().append("*");
-                    }
                     handler.getEditText().append(op);
-                    MainActivity.result.append(op_eval);
+                    MainActivity.result.append(op);
                 }
-                break;
         }
         handler.getMainScrollView().fullScroll(ScrollView.FOCUS_DOWN);
     }
@@ -211,13 +192,9 @@ public class BaseFragment extends Fragment {
             MainActivity.isClear = false;
             MainActivity.result.setLength(0);
         }
-        //TODO rewrite this shit
         else if(MainActivity.result.length() > 0
                 && (!isPorE(num) && (isPorE(MainActivity.result)
-                || MainActivity.result.charAt(MainActivity.result.length() - 1) == '!')
-                || (isPorE(num)
-                && (Character.isDigit(MainActivity.result.charAt(MainActivity.result.length() -1))
-                || isPorE(MainActivity.result)))))
+                || MainActivity.result.charAt(MainActivity.result.length() - 1) == '!')))
         {
             MainActivity.result.append("*");
             handler.getEditText().append("*");
@@ -250,5 +227,6 @@ public class BaseFragment extends Fragment {
         TextView getTextView();
         ScrollView getMainScrollView();
         EditText getEditText();
+
     }
 }

@@ -1,6 +1,8 @@
 package com.example.rssparser.views.fragments;
 
 
+import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -35,6 +37,7 @@ public class WebViewFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_web_view, container, false);
+
     }
 
     @Override
@@ -44,7 +47,8 @@ public class WebViewFragment extends Fragment {
         progressBar = view.findViewById(R.id.webViewProgressBar);
         webView = view.findViewById(R.id.webView);
 
-        WebViewViewModel feedViewModel = new ViewModelProvider(getActivity()).get(WebViewViewModel.class);
+        WebViewViewModel feedViewModel = new ViewModelProvider(getActivity())
+                .get(WebViewViewModel.class);
         String link = feedViewModel.getLink();
         webView.setWebViewClient(new WebViewClient() {
             @Override
@@ -58,4 +62,8 @@ public class WebViewFragment extends Fragment {
         webView.loadUrl(link);
     }
 
+    @Override
+    public void onAttach(@NonNull Activity activity) {
+        super.onAttach(activity);
+    }
 }

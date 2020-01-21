@@ -103,7 +103,7 @@ public class RssListViewFragment extends Fragment {
         });
 
         feedViewModel.getAll().observe(getViewLifecycleOwner(), (List<Feed> feed) ->
-                adapter.setFeedList(feed));
+                adapter.setFeed(feed));
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override

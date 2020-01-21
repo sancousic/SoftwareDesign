@@ -25,7 +25,7 @@ public class Feed {
     @ColumnInfo(name = "media_url")
     public  String mediaUrl;
 
-    @ColumnInfo(name = "pub_name")
+    @ColumnInfo(name = "pub_date")
     public Date pubDate;
 
     @ColumnInfo(name = "feed_url")

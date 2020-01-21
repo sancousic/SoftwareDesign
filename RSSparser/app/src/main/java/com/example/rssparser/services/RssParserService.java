@@ -33,7 +33,7 @@ public class RssParserService {
         XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
         factory.setNamespaceAware(false);
         XmlPullParser parser = factory.newPullParser();
-        parser.setInput(getInputStream(url), "UTF_8");;
+        parser.setInput(getInputStream(url), "UTF_8");
 
         boolean insideItem = false;
         int eventType = parser.getEventType();

@@ -15,15 +15,21 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
+            android:background="@color/milk"
             android:padding="4dp">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:layout_margin="5dp"
+                android:textStyle="bold"
                 android:id="@+id/feedTitle"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textSize="15sp"
+                android:layout_margin="5dp"
                 android:id="@+id/feedPubDate"
                 android:layout_gravity="center"/>
             <ImageView
@@ -34,6 +40,8 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:textSize="15sp"
                 android:id="@+id/feedDescription"/>
 
         </LinearLayout>
